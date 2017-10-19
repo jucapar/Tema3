@@ -1,0 +1,21 @@
+#container{
+	width:80%;
+	margin: 0 auto;
+	text-align: center;
+}
+
+#persona1{
+	float:left;
+	width:33%;
+}
+
+
+#persona2{
+	float:left;
+	width:33%;
+}
+
+#persona3{
+	float:right;
+	width:33%;
+}
