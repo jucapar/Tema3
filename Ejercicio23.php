@@ -156,7 +156,6 @@
 			
 			if(!isset($_POST['estudios'])) {
 				$erroresCampos['estudios'] = $arrayErrores[1];
-				//$arrayErrores[$valida];
 				$error = true;
 				}
 			else {

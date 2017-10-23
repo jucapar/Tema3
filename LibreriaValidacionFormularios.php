@@ -76,7 +76,7 @@
 			$valida = 4;
 		}
 		return $valida;
-		return $valida;
+		
 	}
 	
 	function validarReal($valor,$minimo,$maximo){
