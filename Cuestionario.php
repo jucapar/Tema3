@@ -12,6 +12,7 @@
 
 <?php
 		
+		require "LibreriaValidacionFormularios.php";
 		
 		define ("MIN",5);
 		define ("MAX",30);
@@ -100,7 +101,7 @@
 		
 		if (filter_has_var(INPUT_POST,'enviar')){
 			
-			require "LibreriaValidacionFormularios.php";
+			
 			
 			for ($i = 0;$i<DIMENSION;$i++){
 				$valida = validarDNI($_POST['dni'][$i],MIN,MAX);
