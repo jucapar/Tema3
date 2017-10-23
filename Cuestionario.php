@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -14,8 +14,6 @@
 		
 		require "LibreriaValidacionFormularios.php";
 		
-		define ("MIN",5);
-		define ("MAX",30);
 		define ("MINALTURA",30);
 		define ("MAXALTURA",220);
 		define ("MINPESO",30);
@@ -97,14 +95,14 @@
 				
 		}
 	
-		$arrayErrores = array(" ", "No ha introducido ningun valor<br />", "El valor introducido no es valido<br />","Tamaño minimo no valido<br />", "Tamaño maximo no valido<br />");
+		$arrayErrores = array(" ", "<strong>No ha introducido ningun valor</strong><br />", "<strong>El valor introducido no es valido</strong><br />","<strong>Tamaño minimo no valido</strong><br />", "<strong>Tamaño maximo no valido</strong><br />");
 		
 		if (filter_has_var(INPUT_POST,'enviar')){
 			
 			
 			
 			for ($i = 0;$i<DIMENSION;$i++){
-				$valida = validarDNI($_POST['dni'][$i],MIN,MAX);
+				$valida = validarDNI($_POST['dni'][$i]);
 				if($valida != 0) {
 					$erroresCampos[$i]['dni'] = $arrayErrores[$valida];
 					$erroresEstilos[$i]['dni'] = "error";
@@ -114,7 +112,7 @@
 					$cuestionario[$i]['dni'] = $_POST['dni'][$i];
 				}
 				
-				$valida = validarCadenaAlfabetica($_POST['nombre'][$i],MIN,MAX);
+				$valida = validarCadenaAlfabetica($_POST['nombre'][$i]);
 				if($valida != 0) {
 					$erroresCampos[$i]['nombre'] = $arrayErrores[$valida];
 					$erroresEstilos[$i]['nombre'] = "error";
@@ -125,7 +123,7 @@
 				}
 						
 				
-				$valida =  validarCadenaAlfabetica($_POST['apellido'][$i],MIN,MAX);
+				$valida =  validarCadenaAlfabetica($_POST['apellido'][$i]);
 				if($valida != 0) {
 					$erroresCampos[$i]['apellido'] = $arrayErrores[$valida];
 					$erroresEstilos[$i]['apellido'] = "error";
@@ -199,7 +197,7 @@
 	
 				}
 			
-				$valida =  validarCadenaAlfanumerica($_POST['sugerencias'][$i],MIN,MAX);
+				$valida =  validarCadenaAlfanumerica($_POST['sugerencias'][$i]);
 				if($valida != 0) {
 					$erroresCampos[$i]['sugerencias'] = $arrayErrores[$valida];
 					$erroresEstilos[$i]['sugerencias'] = "error";
@@ -239,12 +237,7 @@
 						$error = true;
 						$cuestionario[$i]['foto'] = '';
 				}
-				
-				
-				
-			}
-
-						
+			}		
 		}
 		if(!filter_has_var(INPUT_POST,'enviar')|| $error ){
 			
@@ -335,12 +328,14 @@
 				for($i = 0; $i < DIMENSION; $i++){
 					foreach($cuestionario[$i] as $clave => $valor){
 						if(is_array($valor)){
+							echo("<strong>".$clave.":</strong>");
 							foreach($valor as $campo){
-								echo "$campo </br>";
+								echo "$campo  ";
 							}
+							echo "<br />";
 						}
 						else{
-							echo $clave.":".$valor."<br />";
+							echo "<strong>".$clave."</strong>:".$valor."<br />";
 						}
 					}
 					echo "<br />";
@@ -351,7 +346,21 @@
 			<img src="<?php echo $cuestionario[0]['foto'];?>"  width="100" height="100" />
 			<img src="<?php echo $cuestionario[1]['foto'];?>" width="100" height="100" />
 			<img src="<?php echo $cuestionario[2]['foto'];?>" width="100" height="100" />
-			<?php }?>
+			<?php
+				echo "<br /><br /><br />";
+				
+				echo "El persona de mas edad nació el ".max(array_column($cuestionario,'fechanac'));
+				echo "<br />";
+				echo "El peso minimo de los encuestados es: ".min(array_column($cuestionario,'peso'));
+				echo "<br />";
+				echo "La altura media de los encuestados es: ".array_sum(array_column($cuestionario,'altura'))/DIMENSION;
+				
+			?>
+			
+			
+			
+			
+				<?php }?>
 </body>
 </html>
 

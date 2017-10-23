@@ -19,7 +19,7 @@
 
 
 
-	function validarCadenaAlfanumerica($valor,$minimo,$maximo){
+	function validarCadenaAlfanumerica($valor,$minimo = 3,$maximo = 100){
 		limpiarCampos($valor);
 		$valida = 0;
 		if(empty($valor)){
@@ -36,7 +36,7 @@
 		
 	}
 
-	function validarCadenaAlfabetica($valor,$minimo,$maximo) {
+	function validarCadenaAlfabetica($valor,$minimo = 3,$maximo = 100) {
 		limpiarCampos($valor);
 		$valida = 0;
 		$patron_texto = "/^[a-zA-ZáéíóúÁÉÍÓÚäëïöüÄËÏÖÜàèìòùÀÈÌÒÙ\s]+$/";
