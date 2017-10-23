@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <link rel="stylesheet" type="text/css" href="estilosCuestionario.css">
+  <link rel="stylesheet" type="text/css" href="css/estilosCuestionario.css">
   <title>Cuestionario</title>
 </head>
 <body>
@@ -25,6 +25,7 @@
 		$directorioSubida = "img/";
 	
 		$cuestionario = array();
+		$erroresCampos = array();
 		$erroresCampos = array();
 		$arraySexo = array();
 		$arrayAficiones = array();
@@ -63,6 +64,24 @@
 			'foto' => ''
 			);
 			
+			$erroresEstilos[$i] = array(
+			'dni' => '',
+			'nombre' => '',
+			'apellido' => '',
+			'email' => '',
+			'altura' => '',
+			'peso' => '',
+			'fechanac' => '',
+			'url' => '',
+			'telefono' => '',
+			'sexo' => '',
+			'aficiones' => '',
+			'sugerencias' => '',
+			'foto' => ''
+			);
+			
+			
+			
 			$arraySexo[$i] = array(
 			'Hombre' => '',
 			'Mujer' => ''
@@ -86,6 +105,7 @@
 				$valida = validarDNI($_POST['dni'][$i],MIN,MAX);
 				if($valida != 0) {
 					$erroresCampos[$i]['dni'] = $arrayErrores[$valida];
+					$erroresEstilos[$i]['dni'] = "error";
 					$error = true;
 				}
 				else {
@@ -95,6 +115,7 @@
 				$valida = validarCadenaAlfabetica($_POST['nombre'][$i],MIN,MAX);
 				if($valida != 0) {
 					$erroresCampos[$i]['nombre'] = $arrayErrores[$valida];
+					$erroresEstilos[$i]['nombre'] = "error";
 					$error = true;
 				}
 				else {
@@ -105,6 +126,7 @@
 				$valida =  validarCadenaAlfabetica($_POST['apellido'][$i],MIN,MAX);
 				if($valida != 0) {
 					$erroresCampos[$i]['apellido'] = $arrayErrores[$valida];
+					$erroresEstilos[$i]['apellido'] = "error";
 					$error = true;
 				}
 				else {
@@ -115,6 +137,7 @@
 				$valida =  validarEmail($_POST['email'][$i]);
 				if($valida != 0) {
 					$erroresCampos[$i]['email'] = $arrayErrores[$valida];
+					$erroresEstilos[$i]['email'] = "error";
 					$error = true;
 				}
 				else {
@@ -124,6 +147,7 @@
 				$valida =  validarEntero($_POST['altura'][$i],MINALTURA,MAXALTURA);
 				if($valida != 0) {
 					$erroresCampos[$i]['altura'] = $arrayErrores[$valida];
+					$erroresEstilos[$i]['altura'] = "error";
 					$error = true;
 				}
 				else {
@@ -133,6 +157,7 @@
 				$valida =  validarReal($_POST['peso'][$i],MINPESO,MAXPESO);
 				if($valida != 0) {
 					$erroresCampos[$i]['peso'] = $arrayErrores[$valida];
+					$erroresEstilos[$i]['peso'] = "error";
 					$error = true;
 				}
 				else {
@@ -142,6 +167,7 @@
 				
 				if(empty($_POST['fechanac'][$i])) {
 					$erroresCampos[$i]['fechanac'] = $arrayErrores[1];
+					$erroresEstilos[$i]['fechanac'] = "error";
 					$error = true;
 				}
 				else {
@@ -152,6 +178,7 @@
 				$valida =  validarURL($_POST['url'][$i]);
 				if($valida != 0) {
 					$erroresCampos[$i]['url'] = $arrayErrores[$valida];
+					$erroresEstilos[$i]['url'] = "error";
 					$error = true;
 				}
 				else {
@@ -162,6 +189,7 @@
 				$valida =  validarTelefono($_POST['telefono'][$i]);
 				if($valida != 0) {
 					$erroresCampos[$i]['telefono'] = $arrayErrores[$valida];
+					$erroresEstilos[$i]['telefono'] = "error";
 					$error = true;
 				}
 				else {
@@ -172,6 +200,7 @@
 				$valida =  validarCadenaAlfanumerica($_POST['sugerencias'][$i],MIN,MAX);
 				if($valida != 0) {
 					$erroresCampos[$i]['sugerencias'] = $arrayErrores[$valida];
+					$erroresEstilos[$i]['sugerencias'] = "error";
 					$error = true;
 				}
 				else {
@@ -180,6 +209,7 @@
 				
 				if(!isset($_POST['sexo'.$i])) {
 					$erroresCampos[$i]['sexo'] = $arrayErrores[1];
+					$erroresEstilos[$i]['sexo'] = "error";
 					$error = true;
 				}
 				else {
@@ -189,6 +219,7 @@
 				
 				if(!isset($_POST['aficiones'.$i])) {
 					$erroresCampos[$i]['aficiones'] = $arrayErrores[1];
+					$erroresEstilos[$i]['aficiones'] = "error";
 					$error = true;
 				}
 				else {
@@ -202,9 +233,12 @@
 	
 				if (!move_uploaded_file($_FILES['foto'.$i]['tmp_name'], $cuestionario[$i]['foto'])) {
 						$erroresCampos[$i]['foto'] = $arrayErrores[1];
+						$erroresEstilos[$i]['foto'] = "error";
 						$error = true;
 						$cuestionario[$i]['foto'] = '';
-				} 
+				}
+				
+				
 				
 			}
 
@@ -215,199 +249,82 @@
 			?>
 			<div id="container">
 			<form enctype="multipart/form-data" action="<?PHP echo $_SERVER['PHP_SELF']; ?>" id="formulario1" method="post">
-	
-			<div id="persona1">
-				<label for="dni[0]">DNI:</label><br />
-				<input type="text" name="dni[0]" value="<?PHP echo $cuestionario[0]['dni']; ?>"><br /><br />
-				<?PHP echo $erroresCampos[0]['dni']; ?>
-				
-				<label for="nombre[0]">Nombre:</label><br />
-				<input type="text" name="nombre[0]" value="<?PHP echo $cuestionario[0]['nombre']; ?>"><br /><br />
-				<?PHP echo $erroresCampos[0]['nombre']; ?>
+			<?php 
 			
-				<label for="apellido[0]">Apellido:</label><br />
-				<input type="text" name="apellido[0]" value="<?PHP echo $cuestionario[0]['apellido']; ?>"><br /><br />
-				<?PHP echo $erroresCampos[0]['apellido']; ?>
+			for($i = 0; $i < DIMENSION;$i++){
 				
-				<label for="email[0]">Email:</label><br />
-				<input type="text" name="email[0]" value="<?PHP echo $cuestionario[0]['email']; ?>"><br /><br />
-				<?PHP echo $erroresCampos[0]['email']; ?>
+			?>
+			<div id="<?php echo "persona".$i ;?>">
+				<label for="<?php echo "dni[$i]";?>">DNI:</label><br />
+				<input type="text" name="<?php echo "dni[$i]";?>" value="<?PHP echo $cuestionario[$i]['dni'];?>" class="<?PHP echo $erroresEstilos[$i]['dni'];?>"><br /><br />
+				<?PHP echo $erroresCampos[$i]['dni']; ?>
+				
+				<label for="<?php echo "nombre[$i]"?>">Nombre:</label><br />
+				<input type="text" name="<?php echo "nombre[$i]";?>" value="<?PHP echo $cuestionario[$i]['nombre']; ?>" class="<?PHP echo $erroresEstilos[$i]['nombre'];?>"><br /><br />
+				<?PHP echo $erroresCampos[$i]['nombre']; ?>
+			
+				<label for="<?php echo "apellido[$i]";?>">Apellido:</label><br />
+				<input type="text" name="<?php echo "apellido[$i]";?>" value="<?PHP echo $cuestionario[$i]['apellido']; ?>" class="<?PHP echo $erroresEstilos[$i]['apellido'];?>"><br /><br />
+				<?PHP echo $erroresCampos[$i]['apellido']; ?>
+				
+				<label for="<?php echo "email[$i]";?>">Email:</label><br />
+				<input type="text" name="<?php echo "email[$i]"?>" value="<?PHP echo $cuestionario[$i]['email']; ?>" class="<?PHP echo $erroresEstilos[$i]['email'];?>"><br /><br />
+				<?PHP echo $erroresCampos[$i]['email']; ?>
 				
 				
-				<label for="altura[0]">Altura (en cm):</label><br />
-				<input type="text" name="altura[0]" value="<?PHP echo $cuestionario[0]['altura']; ?>"><br /><br />
-				<?PHP echo $erroresCampos[0]['altura']; ?>
+				<label for="<?php echo "altura[$i]";?>">Altura (en cm):</label><br />
+				<input type="text" name="<?php echo "altura[$i]";?>" value="<?PHP echo $cuestionario[$i]['altura']; ?>" class="<?PHP echo $erroresEstilos[$i]['altura'];?>"><br /><br />
+				<?PHP echo $erroresCampos[$i]['altura']; ?>
 				
 				
-				<label for="peso[0]">Peso:</label><br />
-				<input type="text" name="peso[0]" value="<?PHP echo $cuestionario[0]['peso']; ?>"><br /><br />
-				<?PHP echo $erroresCampos[0]['peso']; ?>
+				<label for="<?php echo "peso[$i]";?>">Peso:</label><br />
+				<input type="text" name="<?php echo "peso[$i]";?>" value="<?PHP echo $cuestionario[$i]['peso']; ?>" class="<?PHP echo $erroresEstilos[$i]['peso'];?>"><br /><br />
+				<?PHP echo $erroresCampos[$i]['peso']; ?>
 				
 				
-				<label for="fechanac[0]">Fecha de nacimiento:</label><br />
-				<input type="date" name="fechanac[0]" value="<?PHP echo $cuestionario[0]['fechanac']; ?>"><br /><br />
-				<?PHP echo $erroresCampos[0]['fechanac']; ?>
+				<label for="<?php echo "fechanac[$i]";?>">Fecha de nacimiento:</label><br />
+				<input type="date" name="<?php echo "fechanac[$i]";?>" value="<?PHP echo $cuestionario[$i]['fechanac']; ?>" class="<?PHP echo $erroresEstilos[$i]['fechanac'];?>"><br /><br />
+				<?PHP echo $erroresCampos[$i]['fechanac']; ?>
 				
-				<label for="url[0]">URL:</label><br />
-				<input type="text" name="url[0]" value="<?PHP echo $cuestionario[0]['url']; ?>"><br /><br />
-				<?PHP echo $erroresCampos[0]['url']; ?>
+				<label for="<?php echo "url[$i]";?>">URL:</label><br />
+				<input type="text" name="<?php echo "url[$i]";?>" value="<?PHP echo $cuestionario[$i]['url']; ?>" class="<?PHP echo $erroresEstilos[$i]['url'];?>"><br /><br />
+				<?PHP echo $erroresCampos[$i]['url']; ?>
 				
-				<label for="telefono[0]">Telefono:</label><br />
-				<input type="text" name="telefono[0]" value="<?PHP echo $cuestionario[0]['telefono']; ?>"><br /><br />
-				<?PHP echo $erroresCampos[0]['telefono']; ?>
+				<label for="<?php echo "telefono[$i]";?>">Telefono:</label><br />
+				<input type="text" name="<?php echo "telefono[$i]";?>" value="<?PHP echo $cuestionario[$i]['telefono']; ?>" class="<?PHP echo $erroresEstilos[$i]['telefono'];?>"><br /><br />
+				<?PHP echo $erroresCampos[$i]['telefono']; ?>
 				
-				<label for="sexo">Sexo</label><br />
-				<input type="radio" name="sexo0" value="Hombre" <?php echo $arraySexo[0]['Hombre'];?> > Hombre
-				<input type="radio" name="sexo0" value="Mujer" <?php echo $arraySexo[0]['Mujer'];?> > Mujer<br /><br />
+				<label for="<?php echo "sexo".$i;?>">Sexo</label><br />
+				<input type="radio" name="<?php echo "sexo".$i;?>" value="Hombre" <?php echo $arraySexo[0]['Hombre'];?> class="<?PHP echo $erroresEstilos[$i]['sexo'];?>"> Hombre
+				<input type="radio" name="<?php echo "sexo".$i;?>" value="Mujer" <?php echo $arraySexo[0]['Mujer'];?> class="<?PHP echo $erroresEstilos[$i]['sexo'];?>"> Mujer<br /><br />
 				<?PHP echo $erroresCampos[0]['sexo']; ?>
 				
-				<label for="aficiones0[]">Aficiones:</label><br />	
-					<input type="checkbox" name="aficiones0[]" value="Musica" <?php echo $arrayAficiones[0]['Musica'];?>>Musica <br />
-					<input type="checkbox" name="aficiones0[]" value="Cine"  <?php echo $arrayAficiones[0]['Cine'];?>>Cine<br />
-					<input type="checkbox" name="aficiones0[]" value="Lectura" <?php echo $arrayAficiones[0]['Lectura'];?>>Lectura<br />
-					<input type="checkbox" name="aficiones0[]" value="Deporte" <?php echo $arrayAficiones[0]['Deporte'];?>>Deporte<br /><br />
-				<?PHP echo $erroresCampos[0]['aficiones']; ?>
+				<label for="<?php echo "aficiones".$i."[]";?>">Aficiones:</label><br />	
+					<input type="checkbox" name="<?php echo "aficiones".$i."[]";?>" value="Musica" <?php echo $arrayAficiones[$i]['Musica'];?> class="<?PHP echo $erroresEstilos[$i]['aficiones'];?>">Musica <br />
+					<input type="checkbox" name="<?php echo "aficiones".$i."[]";?>" value="Cine"  <?php echo $arrayAficiones[$i]['Cine'];?> class="<?PHP echo $erroresEstilos[$i]['aficiones'];?>">Cine<br />
+					<input type="checkbox" name="<?php echo "aficiones".$i."[]";?>" value="Lectura" <?php echo $arrayAficiones[$i]['Lectura'];?> class="<?PHP echo $erroresEstilos[$i]['aficiones'];?>">Lectura<br />
+					<input type="checkbox" name="<?php echo "aficiones".$i."[]";?>" value="Deporte" <?php echo $arrayAficiones[$i]['Deporte'];?> class="<?PHP echo $erroresEstilos[$i]['aficiones'];?>">Deporte<br /><br />
+				<?PHP echo $erroresCampos[$i]['aficiones']; ?>
 				
-				<label for="sugerencias[0]">Sugerencias:</label><br />	
-				<textarea  cols="20" rows ="10" name="sugerencias[0]" form="formulario1"><?php echo $cuestionario[0]['sugerencias'];?></textarea>
+				<label for="<?php echo "sugerencias[$i]";?>">Sugerencias:</label><br />	
+				<textarea  cols="20" rows ="10" name="<?php echo "sugerencias[$i]";?>" form="formulario1"  class="<?PHP echo $erroresEstilos[$i]['sugerencias'];?>"><?php echo $cuestionario[$i]['sugerencias'];?></textarea>
 				<br />	
-				<?PHP echo $erroresCampos[0]['sugerencias']; ?>
-				<label for="foto[0]">Seleccione una foto de perfil:</label><br />
-				<input type="file" id="file" name="foto0">
-				<br />
-				<?PHP echo $erroresCampos[0]['foto']; ?>
+				<?PHP echo $erroresCampos[$i]['sugerencias']; ?>
+				<label for="<?php echo "foto".$i;?>">Seleccione una foto de perfil:</label><br />
+				<input type="file" id="file" name="<?php echo "foto".$i;?>" class="<?PHP echo $erroresEstilos[$i]['foto'];?>">
+				<br /><br /><br />
+				<?PHP echo $erroresCampos[$i]['foto']; ?>
 				
 			
 			</div>
 			
-			<div id="persona2">
-				<label for="dni[1]">DNI:</label><br />
-				<input type="text" name="dni[1]" value="<?PHP echo $cuestionario[1]['dni']; ?>"><br /><br />
-				<?PHP echo $erroresCampos[1]['dni']; ?>
-			
-				<label for="nombre[1]">Nombre:</label><br />
-				<input type="text" name="nombre[1]" value="<?PHP echo $cuestionario[1]['nombre']; ?>"><br /><br />
-				<?PHP echo $erroresCampos[1]['nombre']; ?>
-			
-				<label for="apellido[1]">Apellido:</label><br />
-				<input type="text" name="apellido[1]" value="<?PHP echo $cuestionario[1]['apellido']; ?>"><br /><br />
-				<?PHP echo $erroresCampos[1]['apellido']; ?>
-				
-				<label for="email[1]">Email:</label><br />
-				<input type="text" name="email[1]" value="<?PHP echo $cuestionario[1]['email']; ?>"><br /><br />
-				<?PHP echo $erroresCampos[1]['email']; ?>
-				
-				<label for="altura[1]">Altura (en cm):</label><br />
-				<input type="text" name="altura[1]" value="<?PHP echo $cuestionario[1]['altura']; ?>"><br /><br />
-				<?PHP echo $erroresCampos[1]['altura']; ?>
-				
-				
-				<label for="peso[1]">Peso:</label><br />
-				<input type="text" name="peso[1]" value="<?PHP echo $cuestionario[1]['peso']; ?>"><br /><br />
-				<?PHP echo $erroresCampos[1]['peso']; ?>
-				
-				
-				<label for="fechanac[1]">Fecha de nacimiento:</label><br />
-				<input type="date" name="fechanac[1]" value="<?PHP echo $cuestionario[1]['fechanac']; ?>"><br /><br />
-				<?PHP echo $erroresCampos[1]['fechanac']; ?>
-					
-				<label for="url[1]">URL:</label><br />
-				<input type="text" name="url[1]" value="<?PHP echo $cuestionario[1]['url']; ?>"><br /><br />
-				<?PHP echo $erroresCampos[1]['url']; ?>
-				
-				<label for="telefono[1]">Telefono:</label><br />
-				<input type="text" name="telefono[1]" value="<?PHP echo $cuestionario[1]['telefono']; ?>"><br /><br />
-				<?PHP echo $erroresCampos[1]['telefono']; ?>
-				
-				<label for="sexo">Sexo</label><br />
-				<input type="radio" name="sexo1" value="Hombre" <?php echo $arraySexo[1]['Hombre'];?> > Hombre
-				<input type="radio" name="sexo1" value="Mujer" <?php echo $arraySexo[1]['Mujer'];?> > Mujer<br /><br />
-				<?PHP echo $erroresCampos[1]['sexo']; ?>
-				
-				<label for="aficiones1[]">Aficiones:</label><br />	
-					<input type="checkbox" name="aficiones1[]" value="Musica" <?php echo $arrayAficiones[1]['Musica'];?>>Musica <br />
-					<input type="checkbox" name="aficiones1[]" value="Cine"  <?php echo $arrayAficiones[1]['Cine'];?>>Cine<br />
-					<input type="checkbox" name="aficiones1[]" value="Lectura" <?php echo $arrayAficiones[1]['Lectura'];?>>Lectura<br />
-					<input type="checkbox" name="aficiones1[]" value="Deporte" <?php echo $arrayAficiones[1]['Deporte'];?>>Deporte<br /><br />
-				<?PHP echo $erroresCampos[1]['aficiones']; ?>
-				
-				<label for="sugerencias[1]">Sugerencias:</label><br />	
-				<textarea  cols="20" rows ="10" name="sugerencias[1]" form="formulario1"><?php echo $cuestionario[1]['sugerencias'];?></textarea>
-				<br />	
-			<?PHP echo $erroresCampos[1]['sugerencias']; ?>
-			
-				<label for="foto[1]">Seleccione una foto de perfil:</label><br />
-				<input type="file" id="file" name="foto1">
-				<br />
-				<?PHP echo $erroresCampos[1]['foto']; ?>
-			</div>
-			
-			<div id="persona2">
-				<label for="dni[2]">DNI:</label><br />
-				<input type="text" name="dni[2]" value="<?PHP echo $cuestionario[2]['dni']; ?>"><br /><br />
-				<?PHP echo $erroresCampos[2]['dni']; ?>
-				
-				<label for="nombre[2]">Nombre:</label><br />
-				<input type="text" name="nombre[2]" value="<?PHP echo $cuestionario[2]['nombre']; ?>"><br /><br />
-				<?PHP echo $erroresCampos[2]['nombre']; ?>
-			
-				<label for="apellido[2]">Apellido:</label><br />
-				<input type="text" name="apellido[2]" value="<?PHP echo $cuestionario[2]['apellido']; ?>"><br /><br />
-				<?PHP echo $erroresCampos[2]['apellido']; ?>
-				
-				<label for="email[2]">Email:</label><br />
-				<input type="text" name="email[2]" value="<?PHP echo $cuestionario[2]['email']; ?>"><br /><br />
-				<?PHP echo $erroresCampos[2]['email']; ?>
-				
-				<label for="altura[2]">Altura (en cm):</label><br />
-				<input type="text" name="altura[2]" value="<?PHP echo $cuestionario[2]['altura']; ?>"><br /><br />
-				<?PHP echo $erroresCampos[2]['altura']; ?>
-				
-				
-				<label for="peso[2]">Peso:</label><br />
-				<input type="text" name="peso[2]" value="<?PHP echo $cuestionario[2]['peso']; ?>"><br /><br />
-				<?PHP echo $erroresCampos[2]['peso']; ?>
-				
-				
-				<label for="fechanac[2]">Fecha de nacimiento:</label><br />
-				<input type="date" name="fechanac[2]" value="<?PHP echo $cuestionario[2]['fechanac']; ?>"><br /><br />
-				<?PHP echo $erroresCampos[2]['fechanac']; ?>
-				
-				<label for="url[2]">URL:</label><br />
-				<input type="text" name="url[2]" value="<?PHP echo $cuestionario[2]['url']; ?>"><br /><br />
-				<?PHP echo $erroresCampos[2]['url']; ?>
-				
-				<label for="telefono[2]">Telefono:</label><br />
-				<input type="text" name="telefono[2]" value="<?PHP echo $cuestionario[2]['telefono']; ?>"><br /><br />
-				<?PHP echo $erroresCampos[2]['telefono']; ?>
-				
-				<label for="sexo2">Sexo</label><br />
-				<input type="radio" name="sexo2" value="Hombre" <?php echo $arraySexo[2]['Hombre'];?> > Hombre
-				<input type="radio" name="sexo2" value="Mujer" <?php echo $arraySexo[2]['Mujer'];?> > Mujer<br /><br />
-				<?PHP echo $erroresCampos[2]['sexo']; ?>
-				
-				<label for="aficiones2[]">Aficiones:</label><br />	
-					<input type="checkbox" name="aficiones2[]" value="Musica" <?php echo $arrayAficiones[2]['Musica'];?>>Musica <br />
-					<input type="checkbox" name="aficiones2[]" value="Cine"  <?php echo $arrayAficiones[2]['Cine'];?>>Cine<br />
-					<input type="checkbox" name="aficiones2[]" value="Lectura" <?php echo $arrayAficiones[2]['Lectura'];?>>Lectura<br />
-					<input type="checkbox" name="aficiones2[]" value="Deporte" <?php echo $arrayAficiones[2]['Deporte'];?>>Deporte<br /><br />
-				<?PHP echo $erroresCampos[2]['aficiones']; ?>
-				
-				
-				<label for="sugerencias[2]">Sugerencias:</label><br />	
-				<textarea  cols="20" rows ="10" name="sugerencias[2]" form="formulario1"><?php echo $cuestionario[2]['sugerencias'];?></textarea>
-				<br />	
-			<?PHP echo $erroresCampos[2]['sugerencias']; ?>
-			
-				<label for="foto[2]">Seleccione una foto de perfil:</label><br />
-				<input type="file" id="file" name="foto2">
-				<br />
+			<?php }?>
 	
-			
+		
 			<input type="submit" name="enviar" value="Enviar">
-			</div>
 			
-		</form>
+			
+			</form>
 		</div>	
 			<?php
 			

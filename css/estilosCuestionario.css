@@ -1,0 +1,22 @@
+#container{
+
+  width: 70%;
+  margin: 0 auto;
+}
+
+#persona0,#persona1{
+    float:left;
+    width: 33%;
+   
+}
+
+#persona0{
+    float:right;
+    width: 33%;
+     
+}
+
+.error{
+   outline: 1px solid red;
+  
+}
