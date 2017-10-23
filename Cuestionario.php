@@ -79,8 +79,6 @@
 			'foto' => ''
 			);
 			
-			
-			
 			$arraySexo[$i] = array(
 			'Hombre' => '',
 			'Mujer' => ''
@@ -98,9 +96,6 @@
 		$arrayErrores = array(" ", "<strong>No ha introducido ningun valor</strong><br />", "<strong>El valor introducido no es valido</strong><br />","<strong>Tamaño minimo no valido</strong><br />", "<strong>Tamaño maximo no valido</strong><br />");
 		
 		if (filter_has_var(INPUT_POST,'enviar')){
-			
-			
-			
 			for ($i = 0;$i<DIMENSION;$i++){
 				$valida = validarDNI($_POST['dni'][$i]);
 				if($valida != 0) {
@@ -355,12 +350,8 @@
 				echo "<br />";
 				echo "La altura media de los encuestados es: ".array_sum(array_column($cuestionario,'altura'))/DIMENSION;
 				
-			?>
-			
-			
-			
-			
-				<?php }?>
+			?>	
+			<?php }?>
 </body>
 </html>
 
