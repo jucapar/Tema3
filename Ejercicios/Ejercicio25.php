@@ -7,20 +7,12 @@
 </head>
 <body>
 <?php
-//Autor: Sergio Marqués Martín
-//Ultima modificación: 23/10/2017
+//Autor: Juan Carlos Pastor
+//Ultima modificación: 26/10/2017
 require 'LibreriaMarques.php';// Instrucción para importar la libreria de funciones.
 $entradaOK=true;//Variable que controla si hay errores en el formulario. Si esta en 'true' la entrada es correcta.
 $aErrores;// Array para guardar mensajes y errores:
-$aEncuesta = array();//Array que contiene las respuestas de la encuesta.
-//Inicialización del array que contiene las respuestas de la encuesta y los errores.
 
-	$aEncuesta = array();
-    $aEncuesta[0] = array(
-	'fecha' => '',
-	   'temperatura' => '',
-	   'presionAtmosferica' => ''
-    );
     $aErrores = array(
        'fecha' => '',
 	   'temperatura' => '',
@@ -38,7 +30,7 @@ if(isset($_POST['AnadirRegistro'])) {
 
     
         $aErrores['fecha']=validarFecha($_POST['fecha'],1);
-	$aErrores['temperatura']=comprobarEntero($_POST['temperatura'],1);
+	    $aErrores['temperatura']=comprobarEntero($_POST['temperatura'],1);
         $aErrores['presionAtmosferica']=comprobarEntero($_POST['temperatura'],1);
 		
 		
@@ -84,16 +76,17 @@ if(!filter_has_var(INPUT_POST,'AnadirRegistro') ||  $entradaOK==false ){
 		<input id="enviar" type="submit" value="Añadir Registro" name="AnadirRegistro"/>
 
     </form>
+	<!-- Formulario para acceder al calculo de los promedios -->
 	<form action="CalculoPromedios.php" method="post">
 		<input id="enviar" type="submit" value="Calcular Promedios" name="CalcularPromedios"/>
 	</form>
     <!--        Fin de la estructura del formulario.-->
     <?php
-    //Y en caso de que no haya error y se haya pulsado el botón de enviar se muestra la información del formulario.	
+    //Y en caso de que no haya error y se haya pulsado el botón de Añadir registro, añadimos un nuevo registro en el fichero de datos
 	}
 	else{
 	
-		
+			echo $_SERVER['REMOTE_ADDR'];
 			$fp = fopen("datos.txt","a+");
 			fwrite($fp,$_POST['fecha']. "+" . $_POST['temperatura']. "+" .$_POST['presionAtmosferica']."\n");
 			fclose($fp);
